@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 import sqlite3
 import re
 from urllib.parse import urljoin
+import dateparser
 import traceback
 
 DATABASE_NAME = 'data.sqlite'
@@ -94,10 +95,22 @@ def parse_dates_page(date_page_url, conn):
     
     c = conn.cursor()
     for vote_link in vote_links:
-        vote_date = vote_link.text.strip()
+        vote_date_str = vote_link.text.strip()
         print("")
         print("")
-        print(vote_date)
+        print(vote_date_str)
+        
+        try:
+            vote_datetime = dateparser.parse(
+                vote_date_str,
+                languages=['de']
+            )
+            vote_date = vote_datetime.date().isoformat()
+            print("Vote date: %s" % vote_date)
+        except (AttributeError, ValueError):
+            print("Couldn't parse date: %s" % vote_date_str)
+            vote_date = vote_date_str
+        
         vote_url = urljoin(date_page_url, vote_link['href'])
         vote_page = requests.get(vote_url)
         soup = BeautifulSoup(vote_page.content, 'html.parser')
