@@ -111,7 +111,7 @@ def parse_dates_page(date_page_url, conn):
         parole_url = urljoin(vote_url, voting_parole_link['href'])
         parole_page = requests.get(parole_url)
         
-        votes = parse_parole_page(parole_page.content, c)
+        votes = parse_parole_page(parole_page.content)
         for vote in votes:
             for parole in vote['paroles']:
                 c.execute(
