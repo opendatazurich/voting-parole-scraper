@@ -162,12 +162,12 @@ soup = BeautifulSoup(page.content, 'html.parser')
 prev_dates_link = soup.find_all("a", href=re.compile("[^#]+.*"), string=re.compile(".*Vergangene Termine.*"))
 prev_url = urljoin(start_url, prev_dates_link[0]['href'])
 
-next_dates_link = soup.find_all("a", href=re.compile("[^#]+.*"), string=re.compile(".*Nächste Termine.*"))
-next_url = urljoin(start_url, next_dates_link[0]['href'])
+# next_dates_link = soup.find_all("a", href=re.compile("[^#]+.*"), string=re.compile(".*Nächste Termine.*"))
+# next_url = urljoin(start_url, next_dates_link[0]['href'])
 
 try:
     parse_dates_page(prev_url, conn)
-    parse_dates_page(next_url, conn)
+    # parse_dates_page(next_url, conn)
 except Exception as e:
     print("Error: %s" % e)
     print(traceback.format_exc())
